@@ -1,0 +1,25 @@
+{
+  "name": "video",
+  "version": "1.0.0",
+  "description": "A video player app made from electron framework.",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ak7488/js_electron_video.git"
+  },
+  "author": "anubhav anand",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ak7488/js_electron_video/issues"
+  },
+  "homepage": "https://github.com/ak7488/js_electron_video#readme",
+  "dependencies": {
+    "electron": "^16.0.6",
+    "get-video-duration": "^4.0.0",
+    "moment": "^2.29.1",
+    "ytdl-core": "^4.9.2"
+  }
+}

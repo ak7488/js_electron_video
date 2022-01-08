@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Video</title>
+		<link rel="stylesheet" href="./Video.css" />
+		<script src="./Video.js" defer></script>
+		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<video id="video"></video>
+		<div id="video_controls">
+			<div class="video_controls_one">
+				<span class="material-icons go_back"> arrow_back </span>
+				<p class="video_name">Name</p>
+				<p class="play_back_rate">Playback rare: 1</p>
+			</div>
+			<div class="video_controls_two">
+				<span class="material-icons btn_previous_video"
+					>skip_previous</span
+				>
+				<span class="material-icons play_back_rate_decrease"
+					>fast_rewind</span
+				>
+				<span class="material-icons play_back_rate_increase">
+					fast_forward
+				</span>
+				<span class="material-icons btn_next_video">skip_next</span>
+			</div>
+			<div class="video_controls_three">
+				<span class="material-icons btn-play"> play_arrow </span>
+				<input type="range" class="input_range" />
+				<div class="volume_container">
+					<span class="material-icons btn_volume_down">
+						volume_down
+					</span>
+					<p class="volume_view">5</p>
+					<span class="material-icons btn_volume_up">
+						volume_up
+					</span>
+				</div>
+				<span class="material-icons btn_fullscreen"> fullscreen </span>
+			</div>
+		</div>
+	</body>
+</html>
