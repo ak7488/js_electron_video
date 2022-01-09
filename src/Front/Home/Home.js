@@ -5,6 +5,7 @@ const moment = require("moment");
 const itemsContainer = document.getElementById("items_container");
 const page_num_view = document.querySelector(".page_num_view");
 const next = document.querySelector(".next");
+const no_result_found = document.querySelector('.no_result_found');
 const previous = document.querySelector(".previous");
 
 // App variables
@@ -23,6 +24,12 @@ ipcRenderer.on("video_info_responce", (_, data) => {
 	totalPage = Math.ceil(data.length / 20);
 	itemBuilder(currentVideoDataSection);
 	page_num_view.innerText = `Page: ${page}/${totalPage}`;
+	if(!data || data.length === 0) {
+		no_result_found.classList.add('show');
+		setTimeout(() => {
+			no_result_found.classList.remove('show');
+		}, 5000)
+	}
 });
 
 // building and displaying Video items
@@ -35,7 +42,8 @@ const itemBuilder = (data) => {
 		video.classList.add("item_video_preview");
 
 		const name = document.createElement("p");
-		(name.innerText = info.name), name.classList.add("item_name");
+		name.innerText = info.name;
+		name.classList.add("item_name");
 
 		const time = document.createElement("p");
 		time.innerText = moment(info.mtime).format("hh:mm A DD-MM-YY");

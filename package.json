@@ -1,10 +1,14 @@
 {
   "name": "video",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "productName": "akVideo",
   "description": "A video player app made from electron framework.",
   "main": "index.js",
   "scripts": {
-    "start": "electron index.js"
+    "start": "electron index.js",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icon.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . akVideo --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=akVideo",
+    "package-linux": "electron-packager . akVideo --overwrite --asar --platform=linux --arch=x64 --icon=assets/icon.png --prune=true --out=release-builds"
   },
   "repository": {
     "type": "git",
@@ -17,9 +21,13 @@
   },
   "homepage": "https://github.com/ak7488/js_electron_video#readme",
   "dependencies": {
-    "electron": "^16.0.6",
-    "get-video-duration": "^4.0.0",
+    "axios": "^0.24.0",
+    "dotenv": "^10.0.0",
     "moment": "^2.29.1",
     "ytdl-core": "^4.9.2"
+  },
+  "devDependencies": {
+    "electron": "^16.0.6",
+    "electron-packager": "^15.4.0"
   }
 }

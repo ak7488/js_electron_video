@@ -1,0 +1,174 @@
+:root {
+	--font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+		"Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+		"Helvetica Neue", sans-serif;
+	--permanent_white: whitesmoke;
+	--permanent_light_black: #202124;
+	--permanent_black: #202124;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: var(--font-family);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	color: var(--permanent_white);
+}
+
+::-webkit-scrollbar {
+	width: 0px;
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+		monospace;
+}
+
+.loader {
+	border: 16px solid #f3f3f3; /* Light grey */
+	border-top: 16px solid #3498db; /* Blue */
+	border-radius: 50%;
+	width: 120px;
+	height: 120px;
+	animation: spin 2s linear infinite;
+	position: fixed;
+	top: calc(50% - 60px);
+	left: calc(50% - 60px);
+	transform: translate(-50%, -50%);
+	display: none;
+	z-index: 6;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+
+.formats {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	display: none;
+	z-index: 5;
+}
+
+.format {
+	padding: 10px;
+	border-radius: 5px;
+	border: 2px solid var(--permanent_white);
+	margin: 10px;
+	width: 150px;
+	background: var(--permanent_light_black);
+}
+
+#video {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+#video_controls {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  background: rgba(0, 0, 0, 0.75);
+  flex-direction: column;
+  justify-content: space-between;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.video_controls {
+display: none;
+}
+
+#video_controls > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px;
+}
+
+#video_controls span,
+#video_controls > div > input {
+  margin: 7px;
+}
+
+#video_controls > div > input {
+  flex: 1;
+  -webkit-appearance: none; /* Override default CSS styles */
+  appearance: none;
+  height: 10px;
+  background: #d3d3d3;
+  outline: none;
+  border-radius: 5px;
+}
+
+#video_controls > div > input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #04aa6d;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+#video_controls > div > div {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+#video_controls span {
+  font-size: 32px;
+  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+  border-radius: 50%;
+  padding: 7px;
+}
+
+.material-icons:hover {
+  background: var(--permanent_white);
+  color: var(--permanent_black);
+}
+
+.material-icons {
+  cursor: pointer;
+}
+
+.no_mouse:hover {
+  cursor: none;
+}
+
+.op-0 {
+  opacity: 0;
+}
+
+.show {
+	display: block;
+}
+
+.show_f {
+	display: flex;
+}
