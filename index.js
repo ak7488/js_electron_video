@@ -1,6 +1,6 @@
 const createWindow = require("./src/Back/createWindow.js");
 const path = require("path");
-const { app, ipcMain } = require("electron");
+const { app, ipcMain, dialog } = require("electron");
 const homeDir = require("os").homedir();
 const findVideoInfo = require("./src/Back/findVideoInfo.js");
 
@@ -56,5 +56,15 @@ async function Main() {
 	});
 	ipcMain.on("maximize", () => {
 		Window.maximize();
+	});
+	ipcMain.on("open_dialog_request", async () => {
+		const path = await dialog.showOpenDialog({
+			properties: ["openDirectory"],
+		});
+		if (path.conceled) return;
+
+		videoPath = path.filePaths[0];
+		const videosInfo = findVideoInfo({ path: videoPath });
+		Window.webContents.send("video_info_responce", videosInfo);
 	});
 }

@@ -116,5 +116,7 @@ window.onkeydown = (event) => {
 		case "M":
 			ipcRenderer.send("maximize", "");
 			break;
+		case "o":
+			ipcRenderer.send("open_dialog_request", "");
 	}
 };
