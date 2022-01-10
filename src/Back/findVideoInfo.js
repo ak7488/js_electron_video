@@ -1,7 +1,7 @@
 const fs = require('fs');
 const homeDir = require('os').homedir();
 
-const findVideoInfo = ({path = homeDir, exclude = ['node', 'python', 'android'], include = ['.mp4', '.mkv', '.MP4', '.MKV']}) => {
+const findVideoInfo = ({path = homeDir, exclude = ['node', 'python', 'android'], include = ['mp4', 'MP4', 'ogg', 'OGG', 'webm', 'WEBM', "wav", "WAV", 'vp8', 'VP8','vp9', 'VP9']}) => {
 	let AllInfo = []
 	
 	const main = ({path = homeDir}) => {
