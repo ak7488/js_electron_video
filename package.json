@@ -1,6 +1,6 @@
 {
   "name": "video",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "productName": "akVideo",
   "description": "A video player app made from electron framework.",
   "main": "index.js",

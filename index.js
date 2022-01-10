@@ -11,6 +11,8 @@ const {
 const homeDir = require("os").homedir();
 const findVideoInfo = require("./src/Back/findVideoInfo.js");
 const axios = require('axios');
+const fs = require('fs')
+const moment = require('moment')
 require('dotenv').config();
 
 let Window = null;
@@ -19,15 +21,60 @@ let videoInfo = null;
 let ytVideoData = null;
 
 app.on("ready", async () => {
-	Window = await createWindow({
-		path: path.join(__dirname, "src/Front/Home/Home.html"),
-	});
-	Main();
+	const argv = process.argv[2];
+
+	if(!argv) return openApp();
+
+	const extension = argv.split('.').reverse()[0];
+	const videoFormats = ['mp4', 'MP4', 'ogg', 'OGG', 'webm', 'WEBM', "wav", "WAV", 'vp8', 'VP8','vp9', 'VP9'];
+
+	if(!extension || !videoFormats.includes(extension)) return openApp();
+	
+	try {
+		const givenFilesDir = argv.split('/').reverse().slice(1).reverse().join('/');
+		const videoName = argv.split('/').reverse().slice(0,1).reverse().join('/');
+		let givenVideoPath = givenFilesDir[0] === '/' ? givenFilesDir : path.join(__dirname, givenFilesDir);
+		givenVideoPath = givenFilesDir[0] === '~' ? givenFilesDir.replace('~', homeDir) : path.join(__dirname, givenFilesDir);
+		const givenPathContents = fs.readdirSync(givenVideoPath);
+		const lstat = fs.lstatSync(`${givenVideoPath}/${videoName}`);
+		if(givenPathContents.includes(videoName) && !lstat.isDirectory()){
+			videoInfo = {
+				name: videoName,
+				time: moment(lstat.mtime).format("hh:mm A DD-MM-YY"),
+				path: `${givenVideoPath}/${videoName}`,
+				AllInfo: [{
+					...lstat,
+					name: videoName,
+					path: `${givenVideoPath}/${videoName}`
+				}],
+				index: 0,
+			};
+			Window = await createWindow({
+				path: path.join(__dirname, "src/Front/Video/Video.html"),
+			});
+			Main();
+		} else {
+			openApp();
+			return
+		}
+	} catch (e) {
+		console.log(e);
+		openApp();
+		return
+	}
+
 });
 
 app.on("window-all-closed", () => {
 	app.quit();
 });
+
+async function openApp () {
+	Window = await createWindow({
+		path: path.join(__dirname, "src/Front/Home/Home.html"),
+	});
+	Main();
+}
 
 async function Main() {
 	ipcMain.on("load_home_window_request", () => {
@@ -80,7 +127,6 @@ async function Main() {
 
 	ipcMain.on('search_request', async (_, query) => {
 		const apiKey = process.env.YT_API_KEY
-		console.log(apiKey)
 		const res = await axios(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=${query}&type=video&key=${apiKey}`);
 		Window.webContents.send('search_result', res.data);
 	})
@@ -109,7 +155,6 @@ async function Main() {
 					label: "Relaod",
 					click: () => {
 						Window.reload();
-						console.log("reload");
 					},
 				},
 				{
