@@ -21,7 +21,9 @@ let videoInfo = null;
 let ytVideoData = null;
 
 app.on("ready", async () => {
-	const argv = process.argv[2];
+	const argv = process.argv[process.argv.length - 1];
+
+	console.log({argv})
 
 	if(!argv) return openApp();
 
@@ -33,8 +35,16 @@ app.on("ready", async () => {
 	try {
 		const givenFilesDir = argv.split('/').reverse().slice(1).reverse().join('/');
 		const videoName = argv.split('/').reverse().slice(0,1).reverse().join('/');
-		let givenVideoPath = givenFilesDir[0] === '/' ? givenFilesDir : path.join(process.cwd(), givenFilesDir);
-		givenVideoPath = givenFilesDir[0] === '~' ? givenFilesDir.replace('~', homeDir) : path.join(process.cwd(), givenFilesDir);
+		console.log({givenFilesDir}, givenFilesDir[0]);
+
+		let givenVideoPath = path.join(process.cwd(), givenFilesDir);
+
+		if(givenFilesDir[0] === '/'){
+			givenVideoPath = givenFilesDir
+		} else if (givenFilesDir[0] === '~'){
+			givenVideoPath = givenFilesDir.replace('~', homeDir)
+		}
+		
 		const givenPathContents = fs.readdirSync(givenVideoPath);
 		const lstat = fs.lstatSync(`${givenVideoPath}/${videoName}`);
 		if(givenPathContents.includes(videoName) && !lstat.isDirectory()){
@@ -126,8 +136,7 @@ async function Main() {
 	});
 
 	ipcMain.on('search_request', async (_, query) => {
-		const apiKey = process.env.YT_API_KEY
-		const res = await axios(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=${query}&type=video&key=${apiKey}`);
+		const res = await axios(`https://ak7488-proxy-server.herokuapp.com/yt/query?q=${query}`);
 		Window.webContents.send('search_result', res.data);
 	})
 
