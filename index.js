@@ -33,8 +33,8 @@ app.on("ready", async () => {
 	try {
 		const givenFilesDir = argv.split('/').reverse().slice(1).reverse().join('/');
 		const videoName = argv.split('/').reverse().slice(0,1).reverse().join('/');
-		let givenVideoPath = givenFilesDir[0] === '/' ? givenFilesDir : path.join(__dirname, givenFilesDir);
-		givenVideoPath = givenFilesDir[0] === '~' ? givenFilesDir.replace('~', homeDir) : path.join(__dirname, givenFilesDir);
+		let givenVideoPath = givenFilesDir[0] === '/' ? givenFilesDir : path.join(process.cwd(), givenFilesDir);
+		givenVideoPath = givenFilesDir[0] === '~' ? givenFilesDir.replace('~', homeDir) : path.join(process.cwd(), givenFilesDir);
 		const givenPathContents = fs.readdirSync(givenVideoPath);
 		const lstat = fs.lstatSync(`${givenVideoPath}/${videoName}`);
 		if(givenPathContents.includes(videoName) && !lstat.isDirectory()){
