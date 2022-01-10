@@ -20,6 +20,7 @@ ipcRenderer.send("video_info_request", "");
 // reciving video info from back end
 ipcRenderer.on("video_info_responce", (_, data) => {
 	videoData = data;
+	console.log(data)
 	currentVideoDataSection = data.slice(0, 20);
 	totalPage = Math.ceil(data.length / 20);
 	itemBuilder(currentVideoDataSection);
@@ -105,6 +106,27 @@ function previousPageHandler() {
 	page_num_view.innerText = `Page: ${page}/${totalPage}`;
 }
 
+function compareT(a, b) {
+    if (a.mtime > b.mtime) {
+        return -1;
+    } else {
+        return 1;
+    }
+}
+
+function sortT () {
+	videoData = videoData.sort(compareT);
+	currentVideoDataSection = videoData.slice((page - 1) * 20, page * 20);
+	itemBuilder(currentVideoDataSection);
+}
+
+function sortN () {
+	videoData = videoData.sort((a, b) => a.name.localeCompare(b.name))
+	currentVideoDataSection = videoData.slice((page - 1) * 20, page * 20);
+	itemBuilder(currentVideoDataSection);
+}
+
+
 window.onkeydown = (event) => {
 	const key = event.key;
 
@@ -126,5 +148,12 @@ window.onkeydown = (event) => {
 			break;
 		case "o":
 			ipcRenderer.send("open_dialog_request", "");
+			break;
+		case "T":
+			sortT();
+			break;
+		case "N":
+			sortN();
+			break;
 	}
 };

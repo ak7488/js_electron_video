@@ -1,14 +1,15 @@
 {
   "name": "video",
   "version": "2.1.0",
-  "productName": "akVideo",
+  "productName": "video",
   "description": "A video player app made from electron framework.",
   "main": "index.js",
   "scripts": {
     "start": "electron index.js",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icon.icns --prune=true --out=release-builds",
-    "package-win": "electron-packager . akVideo --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=akVideo",
-    "package-linux": "electron-packager . akVideo --overwrite --asar --platform=linux --arch=x64 --icon=assets/icon.png --prune=true --out=release-builds"
+    "package-win": "electron-packager . video --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=video",
+    "package-linux": "electron-packager . video --overwrite --asar --platform=linux --arch=x64 --icon=assets/icon.png --prune=true --out=release-builds",
+    "create-debian-installer": "electron-installer-debian --src ./release-builds/video-linux-x64/ --arch amd64 --config debian.json"
   },
   "repository": {
     "type": "git",

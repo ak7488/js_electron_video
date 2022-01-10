@@ -23,19 +23,14 @@ let ytVideoData = null;
 app.on("ready", async () => {
 	const argv = process.argv[process.argv.length - 1];
 
-	console.log({argv})
-
 	if(!argv) return openApp();
 
 	const extension = argv.split('.').reverse()[0];
 	const videoFormats = ['mp4', 'MP4', 'ogg', 'OGG', 'webm', 'WEBM', "wav", "WAV", 'vp8', 'VP8','vp9', 'VP9'];
-
-	if(!extension || !videoFormats.includes(extension)) return openApp();
 	
 	try {
 		const givenFilesDir = argv.split('/').reverse().slice(1).reverse().join('/');
 		const videoName = argv.split('/').reverse().slice(0,1).reverse().join('/');
-		console.log({givenFilesDir}, givenFilesDir[0]);
 
 		let givenVideoPath = path.join(process.cwd(), givenFilesDir);
 
@@ -44,20 +39,26 @@ app.on("ready", async () => {
 		} else if (givenFilesDir[0] === '~'){
 			givenVideoPath = givenFilesDir.replace('~', homeDir)
 		}
+
+		const lstat = fs.lstatSync(`${givenVideoPath}/${videoName}`);
+
+		if(!extension || !videoFormats.includes(extension) || lstat.isDirectory()) {
+			videoPath = `${givenVideoPath}/${videoName}`
+			openApp();
+			return
+		}
 		
 		const givenPathContents = fs.readdirSync(givenVideoPath);
-		const lstat = fs.lstatSync(`${givenVideoPath}/${videoName}`);
+		
+		const AllInfo = await findVideoInfo({path: givenVideoPath});
+		const index = AllInfo.findIndex(e => e.path === `${givenVideoPath}/${videoName}`);
 		if(givenPathContents.includes(videoName) && !lstat.isDirectory()){
 			videoInfo = {
 				name: videoName,
 				time: moment(lstat.mtime).format("hh:mm A DD-MM-YY"),
 				path: `${givenVideoPath}/${videoName}`,
-				AllInfo: [{
-					...lstat,
-					name: videoName,
-					path: `${givenVideoPath}/${videoName}`
-				}],
-				index: 0,
+				AllInfo,
+				index,
 			};
 			Window = await createWindow({
 				path: path.join(__dirname, "src/Front/Video/Video.html"),
@@ -207,3 +208,5 @@ async function Main() {
 		BrowserWindow.getFocusedWindow().webContents.toggleDevTools();
 	});
 }
+
+
