@@ -23,7 +23,7 @@ let ytVideoData = null;
 app.on("ready", async () => {
 	const argv = process.argv[process.argv.length - 1];
 
-	if(!argv) return openApp();
+	if(!argv || process.argv.length <= 1) return openApp();
 
 	const extension = argv.split('.').reverse()[0];
 	const videoFormats = ['mp4', 'MP4', 'ogg', 'OGG', 'webm', 'WEBM', "wav", "WAV", 'vp8', 'VP8','vp9', 'VP9'];
@@ -42,8 +42,11 @@ app.on("ready", async () => {
 
 		const lstat = fs.lstatSync(`${givenVideoPath}/${videoName}`);
 
-		if(!extension || !videoFormats.includes(extension) || lstat.isDirectory()) {
+		if (lstat.isDirectory()){
 			videoPath = `${givenVideoPath}/${videoName}`
+			openApp();
+			return
+		} else if(!extension || !videoFormats.includes(extension)) {
 			openApp();
 			return
 		}
